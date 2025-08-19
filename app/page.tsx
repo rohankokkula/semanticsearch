@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import SearchBar from '@/components/SearchBar'
 import SearchResults from '@/components/SearchResults'
-import DemoData from '@/components/DemoData'
+
 import { ContentstackEntry } from '@/types/contentstack'
 import { searchEntries } from '@/lib/contentstack'
 
@@ -63,18 +63,16 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Contentstack Semantic Search
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Find content using natural language. Our AI understands what you're looking for, 
-            not just the exact words you type.
-          </p>
+                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Find content using natural language. Our AI understands what you're looking for, 
+          not just the exact words you type.
+        </p>
+        <div className="mt-4 text-sm text-gray-500">
+          <p>🔗 Connected to Contentstack - Search your actual content in real-time</p>
+        </div>
         </div>
 
-        {/* Demo Data Section */}
-        <DemoData onDataLoaded={(entries) => {
-          // Store demo entries in local state for search
-          // In production, this would be handled by the Contentstack integration
-          console.log('Demo data loaded:', entries.length, 'entries')
-        }} />
+
 
         {/* Search Interface */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">

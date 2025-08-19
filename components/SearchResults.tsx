@@ -2,6 +2,7 @@
 
 import { ContentstackEntry } from '@/types/contentstack'
 import { Calendar, Globe, FileText, Star, ExternalLink } from 'lucide-react'
+import { getIndexStats } from '@/lib/contentstack'
 
 interface SearchResultsProps {
   results: ContentstackEntry[]
@@ -39,7 +40,12 @@ export default function SearchResults({ results, isLoading, query }: SearchResul
         </div>
         <h3 className="text-lg font-medium text-gray-900 mb-2">No results found</h3>
         <p className="text-gray-600">
-          We couldn't find any content matching "{query}". Try different keywords or check your filters.
+          We couldn't find any content matching "{query}". 
+          {getIndexStats().totalEntries === 0 ? (
+            <span> No content has been indexed yet. Content will appear here once webhooks are configured and content is published.</span>
+          ) : (
+            <span> Try different keywords or check your filters.</span>
+          )}
         </p>
       </div>
     )
