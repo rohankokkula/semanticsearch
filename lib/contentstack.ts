@@ -243,3 +243,12 @@ export function getEntriesByLocale(locale: string): ContentstackEntry[] {
     entry.locale === locale
   )
 }
+
+/**
+ * Clear all entries from the search index
+ */
+export function clearSearchIndex() {
+  searchIndex.clear()
+  embeddingsIndex.clear()
+  console.log('Search index cleared')
+}

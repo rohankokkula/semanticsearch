@@ -63,99 +63,35 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Contentstack Semantic Search
           </h1>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Find content using natural language. Our AI understands what you're looking for, 
-          not just the exact words you type.
-        </p>
-        <div className="mt-4 text-sm text-gray-500">
-          <p>🔗 Connected to Contentstack - Search your actual content in real-time</p>
-        </div>
-        
-        {/* Test Data Section */}
-        <div className="mt-6 flex flex-wrap gap-4">
-          <button
-            onClick={async () => {
-              try {
-                const response = await fetch('/api/test-data', { method: 'POST' })
-                const data = await response.json()
-                if (data.success) {
-                  alert(`Added ${data.entries.length} test entries: ${data.entries.join(', ')}`)
-                }
-              } catch (error) {
-                console.error('Failed to load test data:', error)
-              }
-            }}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-          >
-            Load Test Data
-          </button>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Find content using natural language. Our AI understands what you're looking for, 
+            not just the exact words you type.
+          </p>
+          <div className="mt-4 text-sm text-gray-500">
+            <p>🔗 Connected to Contentstack - Search your actual content in real-time</p>
+          </div>
           
-          <button
-            onClick={async () => {
-              try {
-                const response = await fetch('/api/entries')
-                const data = await response.json()
-                if (data.success) {
-                  setSearchResults(data.entries)
-                  setSearchQuery('All Entries')
-                }
-              } catch (error) {
-                console.error('Failed to get entries:', error)
-              }
-            }}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            List All Entries
-          </button>
-          
-          <button
-            onClick={async () => {
-              try {
-                const response = await fetch('/api/test-webhook', { 
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    event: 'entry.published',
-                    data: {
-                      entry: {
-                        uid: `webhook-test-${Date.now()}`,
-                        title: 'Webhook Test Entry',
-                        locale: 'en-us',
-                        url: '/webhook-test',
-                        created_at: new Date().toISOString(),
-                        updated_at: new Date().toISOString(),
-                        published_at: new Date().toISOString(),
-                        content: 'This entry was created via webhook simulation.',
-                        description: 'Testing webhook functionality',
-                        category: 'webhook-test'
-                      },
-                      content_type: {
-                        uid: 'webhook_test',
-                        title: 'Webhook Test'
-                      }
-                    }
-                  })
-                })
-                const data = await response.json()
-                if (data.success) {
-                  alert('Webhook test successful! Entry added to index.')
-                }
-              } catch (error) {
-                console.error('Failed to test webhook:', error)
-              }
-            }}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-          >
-            Test Webhook
-          </button>
-          
-          <span className="text-sm text-gray-500 self-center">
-            (Use these buttons to test the search functionality)
-          </span>
+          {/* Webhook Status Section */}
+          <div className="mt-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center space-x-3">
+                <div className="flex-shrink-0">
+                  <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 text-sm font-semibold">🔗</span>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-blue-900">
+                    Webhook Status: Active
+                  </h3>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Waiting for Contentstack webhook calls. Content will appear here automatically when published.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-
-
 
         {/* Search Interface */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
