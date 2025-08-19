@@ -70,6 +70,89 @@ export default function Home() {
         <div className="mt-4 text-sm text-gray-500">
           <p>🔗 Connected to Contentstack - Search your actual content in real-time</p>
         </div>
+        
+        {/* Test Data Section */}
+        <div className="mt-6 flex flex-wrap gap-4">
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/test-data', { method: 'POST' })
+                const data = await response.json()
+                if (data.success) {
+                  alert(`Added ${data.entries.length} test entries: ${data.entries.join(', ')}`)
+                }
+              } catch (error) {
+                console.error('Failed to load test data:', error)
+              }
+            }}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Load Test Data
+          </button>
+          
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/entries')
+                const data = await response.json()
+                if (data.success) {
+                  setSearchResults(data.entries)
+                  setSearchQuery('All Entries')
+                }
+              } catch (error) {
+                console.error('Failed to get entries:', error)
+              }
+            }}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            List All Entries
+          </button>
+          
+          <button
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/test-webhook', { 
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    event: 'entry.published',
+                    data: {
+                      entry: {
+                        uid: `webhook-test-${Date.now()}`,
+                        title: 'Webhook Test Entry',
+                        locale: 'en-us',
+                        url: '/webhook-test',
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
+                        published_at: new Date().toISOString(),
+                        content: 'This entry was created via webhook simulation.',
+                        description: 'Testing webhook functionality',
+                        category: 'webhook-test'
+                      },
+                      content_type: {
+                        uid: 'webhook_test',
+                        title: 'Webhook Test'
+                      }
+                    }
+                  })
+                })
+                const data = await response.json()
+                if (data.success) {
+                  alert('Webhook test successful! Entry added to index.')
+                }
+              } catch (error) {
+                console.error('Failed to test webhook:', error)
+              }
+            }}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+          >
+            Test Webhook
+          </button>
+          
+          <span className="text-sm text-gray-500 self-center">
+            (Use these buttons to test the search functionality)
+          </span>
+        </div>
         </div>
 
 

@@ -218,3 +218,28 @@ export function getIndexStats() {
     locales: Array.from(new Set(Array.from(searchIndex.values()).map(e => e.locale)))
   }
 }
+
+/**
+ * Get all indexed entries
+ */
+export function getAllEntries(): ContentstackEntry[] {
+  return Array.from(searchIndex.values())
+}
+
+/**
+ * Get entries by content type
+ */
+export function getEntriesByType(contentType: string): ContentstackEntry[] {
+  return Array.from(searchIndex.values()).filter(entry => 
+    entry.content_type_uid === contentType
+  )
+}
+
+/**
+ * Get entries by locale
+ */
+export function getEntriesByLocale(locale: string): ContentstackEntry[] {
+  return Array.from(searchIndex.values()).filter(entry => 
+    entry.locale === locale
+  )
+}
