@@ -39,6 +39,8 @@ CONTENTSTACK_MANAGEMENT_TOKEN=your_management_token
 OPENAI_API_KEY=your_openai_api_key
 ```
 
+**Note**: For demo purposes, the app works without these environment variables. It will use sample data to demonstrate the search functionality.
+
 ## Installation
 
 1. **Clone the repository**
@@ -52,10 +54,11 @@ OPENAI_API_KEY=your_openai_api_key
    npm install
    ```
 
-3. **Set up environment variables**
+3. **Set up environment variables (optional for demo)**
    ```bash
-   cp .env.example .env.local
+   cp env.template .env.local
    # Edit .env.local with your actual credentials
+   # Note: The app works without these for demo purposes
    ```
 
 4. **Run the development server**

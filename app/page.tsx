@@ -18,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     // Initialize with sample content types and locales
+    // In production, these would come from Contentstack API
     setContentTypes(['blog_post', 'product', 'article', 'page'])
     setLocales(['en-us', 'es-es', 'fr-fr'])
   }, [])

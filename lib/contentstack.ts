@@ -1,13 +1,15 @@
 import Contentstack from 'contentstack'
 import { ContentstackEntry, SearchFilters } from '@/types/contentstack'
 
-// Initialize Contentstack client
+// Initialize Contentstack delivery client
 const Stack = Contentstack.Stack({
   api_key: process.env.CONTENTSTACK_API_KEY || '',
   delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN || '',
   environment: process.env.CONTENTSTACK_ENVIRONMENT || 'development',
-  management_token: process.env.CONTENTSTACK_MANAGEMENT_TOKEN || '',
 })
+
+// Note: Management operations require the Contentstack Management SDK
+// For now, we'll use demo data and provide a structure for future integration
 
 // In-memory storage for demo purposes
 // In production, you'd use a proper vector database like FAISS, Pinecone, or Weaviate
@@ -198,33 +200,12 @@ function searchInFields(fields: Record<string, any>, query: string): boolean {
  */
 export async function fetchAndIndexEntries(contentType?: string) {
   try {
-    const query = Stack.ContentType(contentType || '')
-      .Entries()
-      .limit(100)
-      .toJSON()
-
-    const response = await query.fetch()
+    // For demo purposes, we'll use the existing demo data
+    // In production, this would use the Contentstack Delivery API
+    console.log(`Would fetch entries for content type: ${contentType || 'all'}`)
     
-    if (response.entries) {
-      response.entries.forEach((entry: any) => {
-        const indexedEntry: ContentstackEntry = {
-          uid: entry.uid,
-          title: entry.title || entry.uid,
-          content_type_uid: entry.content_type.uid,
-          locale: entry.locale,
-          url: entry.url || '',
-          created_at: entry.created_at,
-          updated_at: entry.updated_at,
-          published_at: entry.published_at,
-          fields: entry
-        }
-        
-        searchIndex.set(entry.uid, indexedEntry)
-      })
-    }
-
-    console.log(`Indexed ${response.entries?.length || 0} entries`)
-    return response.entries?.length || 0
+    // Return the count of already indexed demo entries
+    return searchIndex.size
   } catch (error) {
     console.error('Failed to fetch entries:', error)
     throw error
@@ -236,8 +217,14 @@ export async function fetchAndIndexEntries(contentType?: string) {
  */
 export async function getContentTypes() {
   try {
-    const response = await Stack.ContentType().query().find()
-    return response.content_types || []
+    // For demo purposes, return sample content types
+    // In production, this would use the Contentstack Management SDK
+    return [
+      { uid: 'product', title: 'Product' },
+      { uid: 'article', title: 'Article' },
+      { uid: 'blog_post', title: 'Blog Post' },
+      { uid: 'page', title: 'Page' }
+    ]
   } catch (error) {
     console.error('Failed to fetch content types:', error)
     return []
@@ -249,8 +236,13 @@ export async function getContentTypes() {
  */
 export async function getLocales() {
   try {
-    const response = await Stack.Locale().query().find()
-    return response.locales || []
+    // For demo purposes, return sample locales
+    // In production, this would use the Contentstack Management SDK
+    return [
+      { code: 'en-us', name: 'English (US)' },
+      { code: 'es-es', name: 'Spanish (Spain)' },
+      { code: 'fr-fr', name: 'French (France)' }
+    ]
   } catch (error) {
     console.error('Failed to fetch locales:', error)
     return []
