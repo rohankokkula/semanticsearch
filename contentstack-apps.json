@@ -1,0 +1,9 @@
+{
+  "name": "contentstack-webhook-app",
+  "type": "react-app",
+  "framework": "create-react-app",
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install",
+  "devCommand": "npm start"
+}
