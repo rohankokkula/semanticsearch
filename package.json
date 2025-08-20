@@ -1,32 +1,43 @@
 {
-  "name": "contentstack-semantic-search",
-  "version": "0.1.0",
-  "private": true,
+  "name": "contentstack-webhook-app",
+  "version": "1.0.0",
+  "description": "React app to display Contentstack webhook entry updates",
+  "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "server": "node server.js",
+    "dev": "concurrently \"npm run server\" \"npm run start\"",
+    "build-and-serve": "npm run build && npm run server"
   },
   "dependencies": {
-    "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "contentstack": "^3.17.0",
-    "openai": "^4.20.1",
-    "faiss-node": "^0.5.0",
-    "axios": "^1.6.2",
-    "lucide-react": "^0.294.0",
-    "tailwindcss": "^3.3.6",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "socket.io-client": "^4.7.2",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "socket.io": "^4.7.2",
+    "concurrently": "^8.2.0",
+    "axios": "^1.6.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4"
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
   }
 }

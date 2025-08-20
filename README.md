@@ -1,215 +1,159 @@
-# Contentstack Semantic Search App
+# Contentstack Webhook App
 
-A smart, embeddings-based search application for Contentstack that understands the meaning behind user queries and returns the most relevant content using semantic similarity.
+A simple React.js application that displays real-time entry updates from Contentstack webhooks.
 
 ## Features
 
-- **Semantic Search**: Natural language search that understands intent, not just keywords
-- **Real-time Updates**: Webhook integration for instant content indexing
-- **Content Filtering**: Filter by content type and locale
-- **Modern UI**: Clean, responsive interface built with Next.js and Tailwind CSS
-- **Scalable Architecture**: Ready for vector database integration (FAISS, Pinecone, Weaviate)
-
-## Tech Stack
-
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **CMS Integration**: Contentstack SDK
-- **Search**: Vector similarity search (ready for embeddings)
-- **Deployment**: Contentstack Launch (GitHub integration)
+- Real-time webhook data display using Socket.IO
+- Clean, responsive UI
+- Webhook status monitoring
+- Entry history with timestamps
+- Clear entries functionality
+- RESTful API endpoints
 
 ## Prerequisites
 
-- Node.js 18+ 
-- Contentstack account with API credentials
-- OpenAI API key (for future embeddings implementation)
-
-## Environment Variables
-
-Create a `.env.local` file in the root directory:
-
-```bash
-# Contentstack Configuration
-CONTENTSTACK_API_KEY=your_api_key
-CONTENTSTACK_DELIVERY_TOKEN=your_delivery_token
-CONTENTSTACK_ENVIRONMENT=your_environment
-CONTENTSTACK_MANAGEMENT_TOKEN=your_management_token
-
-# OpenAI Configuration (for future use)
-OPENAI_API_KEY=your_openai_api_key
-```
-
-**Note**: For demo purposes, the app works without these environment variables. It will use sample data to demonstrate the search functionality.
+- Node.js (v14 or higher)
+- npm or yarn
 
 ## Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd contentstack-semantic-search
-   ```
+1. Clone or navigate to the project directory:
+```bash
+cd contentstack-webhook-app
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables (optional for demo)**
-   ```bash
-   cp env.template .env.local
-   # Edit .env.local with your actual credentials
-   # Note: The app works without these for demo purposes
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## Contentstack Setup
-
-### 1. Create a Stack
-- Log into your Contentstack account
-- Create a new stack or use an existing one
-
-### 2. Configure Webhooks
-- Go to Settings → Webhooks
-- Create a new webhook with the following configuration:
-  - **URL**: `https://your-domain.com/api/webhook`
-  - **Events**: Select all entry events (publish, unpublish, delete, update)
-  - **Content Types**: Select the content types you want to index
-
-### 3. Get API Credentials
-- Go to Settings → API Keys
-- Note down your API Key, Delivery Token, and Management Token
-- Set the environment to match your webhook configuration
+2. Install dependencies:
+```bash
+npm install
+```
 
 ## Usage
 
-### Initial Setup
-1. Deploy your app to Contentstack Launch
-2. Configure webhooks in Contentstack
-3. Initialize the search index by calling `/api/init-index`
+### Development Mode
 
-### Search Interface
-- Enter natural language queries in the search bar
-- Use filters to narrow results by content type or locale
-- View similarity scores and content previews
-- Click on results to view full entries
+Run both the React development server and the backend server simultaneously:
 
-### Example Queries
-- "red high top sneakers with stripes"
-- "articles about healthy eating"
-- "products under $50"
-- "content for beginners"
-
-## Architecture
-
+```bash
+npm run dev
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Contentstack  │    │   Next.js App    │    │   Search Index  │
-│                 │    │                  │    │                 │
-│ ┌─────────────┐ │    │ ┌──────────────┐ │    │ ┌─────────────┐ │
-│ │   Content   │ │    │ │  Search UI   │ │    │ │  In-Memory  │ │
-│ │   Entries   │ │    │ │              │ │    │ │   Index     │ │
-│ └─────────────┘ │    │ └──────────────┘ │    │ └─────────────┘ │
-│                 │    │                  │    │                 │
-│ ┌─────────────┐ │    │ ┌──────────────┐ │    │ ┌─────────────┐ │
-│ │  Webhooks   │ │───▶│ │   Webhook    │ │───▶│ │  Real-time  │ │
-│ │             │ │    │ │   Handler    │ │    │ │   Updates   │ │
-│ └─────────────┘ │    │ └──────────────┘ │    │ └─────────────┘ │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
+
+This will start:
+- React development server on port 3000
+- Backend server on port 3001
+
+### Production Mode
+
+1. Build the React app:
+```bash
+npm run build
 ```
+
+2. Start the production server:
+```bash
+npm run build-and-serve
+```
+
+Or run them separately:
+```bash
+npm run build
+npm run server
+```
+
+## Configuration
+
+### Contentstack Webhook Setup
+
+1. In your Contentstack dashboard, go to **Settings** > **Webhooks**
+2. Create a new webhook with the following details:
+   - **Name**: Your webhook name
+   - **URL**: `http://your-domain:3001/webhook`
+   - **Events**: Select the events you want to monitor (e.g., Entry Publish, Entry Unpublish, Entry Update)
+   - **Content Types**: Select the content types you want to monitor
+
+### Environment Variables
+
+- `PORT`: Server port (default: 3001)
 
 ## API Endpoints
 
-### Webhook Handler
-- **POST** `/api/webhook` - Receives Contentstack webhook updates
-- **GET** `/api/webhook` - Health check for webhook endpoint
+- `POST /webhook` - Receive webhook data from Contentstack
+- `GET /api/entries` - Get all received webhook entries
+- `DELETE /api/entries` - Clear all entries
+- `GET /webhook/status` - Check webhook endpoint status
+- `GET /health` - Health check endpoint
 
-### Search Index
-- **POST** `/api/init-index` - Initialize search index with existing content
-- **GET** `/api/init-index` - Get current index statistics
+## Webhook Data Structure
 
-## Deployment to Contentstack Launch
+The app receives and displays webhook data in the following format:
 
-### 1. Push to GitHub
-```bash
-git add .
-git commit -m "Initial commit: Contentstack semantic search app"
-git push origin main
+```json
+{
+  "event_type": "entry.published",
+  "content_type_uid": "blog_post",
+  "entry_uid": "entry_123",
+  "data": {
+    "title": "Sample Blog Post",
+    "description": "This is a sample blog post"
+  },
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "received_at": "1/1/2024, 12:00:00 AM"
+}
 ```
 
-### 2. Connect to Contentstack Launch
-- Go to Contentstack Launch
-- Create a new project
-- Connect your GitHub repository
-- Configure build settings:
-  - **Build Command**: `npm run build`
-  - **Output Directory**: `.next`
-  - **Install Command**: `npm install`
+## Real-time Updates
 
-### 3. Environment Variables
-Add your environment variables in the Launch dashboard:
-- `CONTENTSTACK_API_KEY`
-- `CONTENTSTACK_DELIVERY_TOKEN`
-- `CONTENTSTACK_ENVIRONMENT`
-- `CONTENTSTACK_MANAGEMENT_TOKEN`
-- `OPENAI_API_KEY`
+The app uses Socket.IO to provide real-time updates:
+- New webhook entries appear instantly
+- Webhook status updates in real-time
+- Multiple browser tabs stay synchronized
 
-### 4. Deploy
-- Trigger your first deployment
-- Update your webhook URL to point to the deployed domain
+## Troubleshooting
 
-## Future Enhancements
+### Webhook Status Shows as Inactive
 
-### Vector Database Integration
-- Replace in-memory storage with FAISS, Pinecone, or Weaviate
-- Implement proper vector similarity search
-- Add support for large-scale content indexing
+1. Ensure the backend server is running
+2. Check if the server is accessible at the expected port
+3. Verify firewall settings allow incoming connections
 
-### AI-Powered Features
-- OpenAI embeddings for semantic understanding
-- Query expansion and suggestion
-- Content summarization and highlighting
+### No Entries Displayed
 
-### Advanced Search
-- Faceted search and filtering
-- Search analytics and insights
-- Multi-language support
-- Search result ranking optimization
+1. Check if webhooks are being sent to the correct URL
+2. Verify the webhook configuration in Contentstack
+3. Check browser console for any JavaScript errors
 
-## Contributing
+### Port Conflicts
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+If port 3001 is already in use, you can change it by setting the `PORT` environment variable:
+
+```bash
+PORT=3002 npm run server
+```
+
+## Development
+
+### Project Structure
+
+```
+contentstack-webhook-app/
+├── public/
+│   └── index.html
+├── src/
+│   ├── App.js          # Main React component
+│   ├── App.css         # Component styles
+│   ├── index.js        # React entry point
+│   └── index.css       # Global styles
+├── server.js           # Express backend server
+├── package.json        # Dependencies and scripts
+└── README.md           # This file
+```
+
+### Adding New Features
+
+- **New Webhook Events**: Modify the webhook endpoint in `server.js`
+- **UI Enhancements**: Update components in the `src/` directory
+- **Additional API Endpoints**: Add new routes in `server.js`
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For support and questions:
-- Create an issue in this repository
-- Contact the Contentstack team
-- Check the Contentstack documentation
-
-## Roadmap
-
-- [x] Basic search interface
-- [x] Contentstack integration
-- [x] Webhook handling
-- [x] Real-time updates
-- [ ] Vector database integration
-- [ ] AI embeddings
-- [ ] Advanced filtering
-- [ ] Search analytics
-- [ ] Multi-language support
-# semanticsearch
+This project is open source and available under the MIT License.
