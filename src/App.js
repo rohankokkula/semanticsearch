@@ -117,7 +117,7 @@ function App() {
     
     // Use production URL if deployed, otherwise use localhost
     if (currentUrl.includes('contentstackapps.com')) {
-      setWebhookUrl('https://semanticsearch.contentstackapps.com/webhook');
+      setWebhookUrl('https://semanticsearch.contentstackapps.com/api/webhook');
     } else {
       setWebhookUrl(`${currentUrl}/webhook`);
     }
@@ -163,7 +163,7 @@ function App() {
 
   const checkWebhookStatus = async () => {
     try {
-      const response = await fetch('/webhook/status');
+      const response = await fetch('/api/webhook/status');
       if (response.ok) {
         setWebhookStatus('active');
       } else {
@@ -264,7 +264,7 @@ function App() {
           <p>Use this URL in your Contentstack webhook configuration:</p>
           <div className="webhook-url">{webhookUrl}</div>
           <p>
-            <strong>Production URL:</strong> <code>https://semanticsearch.contentstackapps.com/webhook</code>
+            <strong>Production URL:</strong> <code>https://semanticsearch.contentstackapps.com/api/webhook</code>
           </p>
           <p>
             <strong>Note:</strong> Make sure your backend server is running to receive webhook calls.
@@ -333,4 +333,6 @@ function App() {
 }
 
 export default App;
+
+
 
